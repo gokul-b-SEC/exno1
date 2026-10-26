@@ -21,6 +21,142 @@ STEP 5: Remove outliers using IQR
 STEP 6: Use zscore of to remove outliers
 
 # Coding and Output
-            <<include your coding and its corressponding output screen shots here>>
+```
+import pandas as pd
+import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+```
+```
+df = pd.read_csv("Data_set.csv")
+
+print(df.head())
+print(df.info())
+print(df.isnull().sum())
+
+for col in df.select_dtypes(include="number").columns:
+    df[col] = df[col].fillna(df[col].median())
+
+for col in df.select_dtypes(include=["object", "str"]).columns:
+    if df[col].isnull().any() and not df[col].mode().empty:
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+print("\nAfter cleaning:\n", df.isnull().sum())
+df.to_csv("cleaned_Data_set.csv", index=False)
+print("Saved successfully!")
+```
+<img width="596" height="788" alt="image" src="https://github.com/user-attachments/assets/a4869392-4c37-4830-a1b7-59329ba56fdd" />
+
+```
+df = pd.read_csv("SAMPLEIDS.csv")
+
+print(df.head())
+print("Missing values:\n", df.isnull().sum())
+print("Duplicate rows:", df.duplicated().sum())
+
+df = df.drop_duplicates()
+
+# Inspect categorical inconsistencies
+for col in df.select_dtypes(include=["object", "str"]).columns:
+    print(f"\n{col}:", df[col].value_counts(dropna=False))
+
+# Standardize text
+for col in df.select_dtypes(include=["object", "str"]).columns:
+    df[col] = df[col].str.strip().str.upper()
+
+# Fill missing values
+for col in df.select_dtypes(include="number").columns:
+    df[col] = df[col].fillna(df[col].median())
+
+for col in df.select_dtypes(include=["object", "str"]).columns:
+    if df[col].isnull().any() and not df[col].mode().empty:
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+print("\nRemaining missing values:\n", df.isnull().sum())
+df.to_csv("cleaned_SAMPLEIDS.csv", index=False)
+print("Saved successfully!")
+```
+```
+df = pd.read_csv("heights.csv")
+print(df.head())
+print(df.describe())
+
+col = "height"  # Change if your column name differs
+
+Q1 = df[col].quantile(0.25)
+Q3 = df[col].quantile(0.75)
+IQR = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+
+outliers = df[(df[col] < lower) | (df[col] > upper)]
+print("Unusual measurements:\n", outliers)
+
+plt.boxplot(df[col].dropna())
+plt.title("Height Outlier Detection")
+plt.show()
+
+df["is_outlier"] = (df[col] < lower) | (df[col] > upper)
+df.to_csv("cleaned_heights.csv", index=False)
+print("Saved successfully!")
+```
+```
+df = pd.read_csv("iris.csv")
+print(df.head())
+print(df.info())
+
+for col in df.select_dtypes(include="number").columns:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    outliers_iqr = df[(df[col] < Q1 - 1.5 * IQR) |
+                      (df[col] > Q3 + 1.5 * IQR)]
+    print(f"\nIQR outliers in {col}:\n", outliers_iqr[[col]])
+
+    z = np.abs(stats.zscore(df[col], nan_policy="omit"))
+    print(f"Z-score outliers in {col}:\n", df[z > 3][[col]])
+
+df.to_csv("cleaned_iris.csv", index=False)
+print("Saved successfully!")
+```
+```
+df = pd.read_csv("Loan_data.csv")
+
+print(df.head())
+print(df.info())
+print("Missing values:\n", df.isnull().sum())
+print("Duplicates:", df.duplicated().sum())
+
+df = df.drop_duplicates()
+
+# Fill numerical missing values
+for col in df.select_dtypes(include="number").columns:
+    df[col] = df[col].fillna(df[col].median())
+
+# Fill categorical missing values
+for col in df.select_dtypes(include=["object", "str"]).columns:
+    if df[col].isnull().any() and not df[col].mode().empty:
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+# IQR and Z-score on ApplicantIncome
+col = "ApplicantIncome"
+
+Q1 = df[col].quantile(0.25)
+Q3 = df[col].quantile(0.75)
+IQR = Q3 - Q1
+
+outliers_iqr = df[(df[col] < Q1 - 1.5 * IQR) |
+                  (df[col] > Q3 + 1.5 * IQR)]
+print("\nIQR outliers:\n", outliers_iqr[[col]])
+
+z = np.abs(stats.zscore(df[col], nan_policy="omit"))
+print("\nZ-score outliers:\n", df[z > 3][[col]])
+
+df.to_csv("cleaned_Loan_data.csv", index=False)
+print("Saved successfully!")
+```
+
 # Result
           <<include your Result here>>
