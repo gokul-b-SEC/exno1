@@ -76,6 +76,10 @@ print("\nRemaining missing values:\n", df.isnull().sum())
 df.to_csv("cleaned_SAMPLEIDS.csv", index=False)
 print("Saved successfully!")
 ```
+<img width="597" height="786" alt="image" src="https://github.com/user-attachments/assets/f1762e28-72e6-4361-9999-4151878a866b" />
+<img width="595" height="481" alt="image" src="https://github.com/user-attachments/assets/8228d5d3-26c9-4a88-9e7a-ed14202a7506" />
+
+
 ```
 df = pd.read_csv("heights.csv")
 print(df.head())
@@ -101,6 +105,8 @@ df["is_outlier"] = (df[col] < lower) | (df[col] > upper)
 df.to_csv("cleaned_heights.csv", index=False)
 print("Saved successfully!")
 ```
+<img width="595" height="483" alt="image" src="https://github.com/user-attachments/assets/3d857f35-38a7-4552-a601-9c20830cbfc4" />
+
 ```
 df = pd.read_csv("iris.csv")
 print(df.head())
@@ -121,6 +127,8 @@ for col in df.select_dtypes(include="number").columns:
 df.to_csv("cleaned_iris.csv", index=False)
 print("Saved successfully!")
 ```
+<img width="600" height="750" alt="image" src="https://github.com/user-attachments/assets/2f9db559-faca-43c1-b7eb-a84cc0f7cf06" />
+
 ```
 df = pd.read_csv("Loan_data.csv")
 
@@ -157,6 +165,11 @@ print("\nZ-score outliers:\n", df[z > 3][[col]])
 df.to_csv("cleaned_Loan_data.csv", index=False)
 print("Saved successfully!")
 ```
+<img width="600" height="783" alt="image" src="https://github.com/user-attachments/assets/dca3a5ea-7414-4169-870e-c78998863eaa" />
+<img width="603" height="496" alt="image" src="https://github.com/user-attachments/assets/9046ac48-2e14-41a1-8410-ff0d9ef892aa" />
+
+
 
 # Result
-          <<include your Result here>>
+
+Successfully performed data cleaning, handled missing values and duplicates, and detected outliers using IQR and Z-score method
