@@ -72,7 +72,9 @@ df_dropna
 clean_data = df_mean
 clean_data.to_csv('clean_data.csv', index=False)
 ```
+
 <img width="593" height="217" alt="image" src="https://github.com/user-attachments/assets/afd51c37-cb6f-4a5a-9ef8-adecb8902ae7" />
+
 ```
 # Step 1: Read the Data
 df = pd.read_csv('SAMPLEIDS.csv')
@@ -103,6 +105,7 @@ for col in df.columns:
 # Step 6: Save Clean Data
 df.to_csv('clean_SAMPLEIDS.csv', index=False)
 ```
+
 <img width="602" height="793" alt="image" src="https://github.com/user-attachments/assets/7fd868b5-6bac-43a6-8936-6ef59bbd0221" />
 <img width="595" height="791" alt="image" src="https://github.com/user-attachments/assets/4201d5eb-e0e4-4828-af59-f34f548c29fc" />
 <img width="601" height="787" alt="image" src="https://github.com/user-attachments/assets/58282fad-88e2-4150-a803-065729aa28a3" />
@@ -149,6 +152,7 @@ for col in df.select_dtypes(include=np.number).columns:
     print("Data after removing outliers:")
     print(delid)
 ```
+
 <img width="596" height="390" alt="image" src="https://github.com/user-attachments/assets/0782eefb-6064-475b-9d3a-a62361e4a04c" />
 <img width="602" height="317" alt="image" src="https://github.com/user-attachments/assets/6c84397c-3cca-40cc-a1e4-4940894ab41b" />
 
@@ -210,6 +214,7 @@ ir_zclean = ir[(z <= threshold).all(axis=1)]
 print("Data after Z-score:")
 ir_zclean
 ```
+
 <img width="602" height="552" alt="image" src="https://github.com/user-attachments/assets/ccd12d64-b874-4c2e-9c53-626e4a7a36b2" />
 <img width="602" height="622" alt="image" src="https://github.com/user-attachments/assets/7231c55e-fe8f-4b7c-86f6-987657ab2291" />
 
@@ -249,6 +254,7 @@ df
 # Step 10: Save Clean Data
 df.to_csv('clean_Loan_data.csv', index=False)
 ```
+
 <img width="600" height="250" alt="image" src="https://github.com/user-attachments/assets/26a4089c-f967-4909-99f6-d6d520077228" />
 
 
