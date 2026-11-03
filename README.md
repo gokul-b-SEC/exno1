@@ -103,8 +103,11 @@ for col in df.columns:
 # Step 6: Save Clean Data
 df.to_csv('clean_SAMPLEIDS.csv', index=False)
 ```
-<img width="597" height="786" alt="image" src="https://github.com/user-attachments/assets/f1762e28-72e6-4361-9999-4151878a866b" />
-<img width="595" height="481" alt="image" src="https://github.com/user-attachments/assets/8228d5d3-26c9-4a88-9e7a-ed14202a7506" />
+<img width="602" height="793" alt="image" src="https://github.com/user-attachments/assets/7fd868b5-6bac-43a6-8936-6ef59bbd0221" />
+<img width="595" height="791" alt="image" src="https://github.com/user-attachments/assets/4201d5eb-e0e4-4828-af59-f34f548c29fc" />
+<img width="601" height="787" alt="image" src="https://github.com/user-attachments/assets/58282fad-88e2-4150-a803-065729aa28a3" />
+<img width="600" height="790" alt="image" src="https://github.com/user-attachments/assets/ed5cc426-6b76-4a1f-a6bf-df8d6d9c30cc" />
+<img width="600" height="408" alt="image" src="https://github.com/user-attachments/assets/0ae88d94-10f0-40aa-9b10-d13ae8387dde" />
 
 
 ```
@@ -146,7 +149,9 @@ for col in df.select_dtypes(include=np.number).columns:
     print("Data after removing outliers:")
     print(delid)
 ```
-<img width="595" height="483" alt="image" src="https://github.com/user-attachments/assets/3d857f35-38a7-4552-a601-9c20830cbfc4" />
+<img width="596" height="390" alt="image" src="https://github.com/user-attachments/assets/0782eefb-6064-475b-9d3a-a62361e4a04c" />
+<img width="602" height="317" alt="image" src="https://github.com/user-attachments/assets/6c84397c-3cca-40cc-a1e4-4940894ab41b" />
+
 
 ```
 # Step 1: Read the Data
@@ -205,7 +210,8 @@ ir_zclean = ir[(z <= threshold).all(axis=1)]
 print("Data after Z-score:")
 ir_zclean
 ```
-<img width="600" height="750" alt="image" src="https://github.com/user-attachments/assets/2f9db559-faca-43c1-b7eb-a84cc0f7cf06" />
+<img width="602" height="552" alt="image" src="https://github.com/user-attachments/assets/ccd12d64-b874-4c2e-9c53-626e4a7a36b2" />
+<img width="602" height="622" alt="image" src="https://github.com/user-attachments/assets/7231c55e-fe8f-4b7c-86f6-987657ab2291" />
 
 ```
 # Step 1: Read the Data
@@ -243,8 +249,7 @@ df
 # Step 10: Save Clean Data
 df.to_csv('clean_Loan_data.csv', index=False)
 ```
-<img width="600" height="783" alt="image" src="https://github.com/user-attachments/assets/dca3a5ea-7414-4169-870e-c78998863eaa" />
-<img width="603" height="496" alt="image" src="https://github.com/user-attachments/assets/9046ac48-2e14-41a1-8410-ff0d9ef892aa" />
+<img width="600" height="250" alt="image" src="https://github.com/user-attachments/assets/26a4089c-f967-4909-99f6-d6d520077228" />
 
 
 
