@@ -26,144 +26,223 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
+import seaborn as sns
 ```
 ```
-df = pd.read_csv("Data_set.csv")
+# Step 1: Read the Data
+df = pd.read_csv('Data_set.csv')
+df
 
-print(df.head())
-print(df.info())
-print(df.isnull().sum())
+# Step 2: Get basic information
+df.info()
+df.describe()
 
-for col in df.select_dtypes(include="number").columns:
-    df[col] = df[col].fillna(df[col].median())
+# Step 3: Check null values
+df_null = df.isnull()
+df_null
 
-for col in df.select_dtypes(include=["object", "str"]).columns:
-    if df[col].isnull().any() and not df[col].mode().empty:
-        df[col] = df[col].fillna(df[col].mode()[0])
+df_null_sum = df.isnull().sum()
+df_null_sum
 
-print("\nAfter cleaning:\n", df.isnull().sum())
-df.to_csv("cleaned_Data_set.csv", index=False)
-print("Saved successfully!")
+# Fill Null Values with Constant Value 0
+df_nafill_0 = df.fillna(0)
+df_nafill_0
+
+# Fill Null Values with ffill Method
+df_ffill = df.ffill()
+df_ffill
+
+# Fill Null Values with bfill Method
+df_bfill = df.bfill()
+df_bfill
+
+# Fill Null Values with Mean
+df_mean = df.copy()
+
+for col in df_mean.select_dtypes(include=np.number).columns:
+    df_mean[col] = df_mean[col].fillna(df_mean[col].mean())
+
+df_mean
+
+# Drop Null Values
+df_dropna = df.dropna()
+df_dropna
+
+# Step 4: Save Clean Data
+clean_data = df_mean
+clean_data.to_csv('clean_data.csv', index=False)
 ```
 <img width="596" height="788" alt="image" src="https://github.com/user-attachments/assets/a4869392-4c37-4830-a1b7-59329ba56fdd" />
 
 ```
-df = pd.read_csv("SAMPLEIDS.csv")
+# Step 1: Read the Data
+df = pd.read_csv('SAMPLEIDS.csv')
+df
 
-print(df.head())
-print("Missing values:\n", df.isnull().sum())
-print("Duplicate rows:", df.duplicated().sum())
+# Step 2: Get basic information
+df.info()
+df.describe()
 
+# Step 3: Check null values
+df.isnull().sum()
+
+# Step 4: Check duplicate values
+df.duplicated().sum()
+
+# Display duplicate rows
+df[df.duplicated()]
+
+# Remove duplicate values
 df = df.drop_duplicates()
 
-# Inspect categorical inconsistencies
-for col in df.select_dtypes(include=["object", "str"]).columns:
-    print(f"\n{col}:", df[col].value_counts(dropna=False))
+# Step 5: Inspect inconsistent values
+for col in df.columns:
+    print("\nColumn:", col)
+    print(df[col].value_counts(dropna=False))
+    print(df[col].unique())
 
-# Standardize text
-for col in df.select_dtypes(include=["object", "str"]).columns:
-    df[col] = df[col].str.strip().str.upper()
-
-# Fill missing values
-for col in df.select_dtypes(include="number").columns:
-    df[col] = df[col].fillna(df[col].median())
-
-for col in df.select_dtypes(include=["object", "str"]).columns:
-    if df[col].isnull().any() and not df[col].mode().empty:
-        df[col] = df[col].fillna(df[col].mode()[0])
-
-print("\nRemaining missing values:\n", df.isnull().sum())
-df.to_csv("cleaned_SAMPLEIDS.csv", index=False)
-print("Saved successfully!")
+# Step 6: Save Clean Data
+df.to_csv('clean_SAMPLEIDS.csv', index=False)
 ```
 <img width="597" height="786" alt="image" src="https://github.com/user-attachments/assets/f1762e28-72e6-4361-9999-4151878a866b" />
 <img width="595" height="481" alt="image" src="https://github.com/user-attachments/assets/8228d5d3-26c9-4a88-9e7a-ed14202a7506" />
 
 
 ```
-df = pd.read_csv("heights.csv")
-print(df.head())
-print(df.describe())
+# Step 1: Read the Data
+df = pd.read_csv('heights.csv')
+df
 
-col = "height"  # Change if your column name differs
+# Step 2: Get basic information
+df.info()
+df.describe()
 
-Q1 = df[col].quantile(0.25)
-Q3 = df[col].quantile(0.75)
-IQR = Q3 - Q1
+# Step 3: Check null values
+df.isnull().sum()
 
-lower = Q1 - 1.5 * IQR
-upper = Q3 + 1.5 * IQR
+# Step 4: Detect Outliers using Boxplot
+sns.boxplot(data=df.select_dtypes(include=np.number))
 
-outliers = df[(df[col] < lower) | (df[col] > upper)]
-print("Unusual measurements:\n", outliers)
+# Step 5: Detect Outliers using Scatterplot
+sns.scatterplot(data=df.select_dtypes(include=np.number))
 
-plt.boxplot(df[col].dropna())
-plt.title("Height Outlier Detection")
-plt.show()
+# Step 6: Calculate IQR
+for col in df.select_dtypes(include=np.number).columns:
+    q1 = df[col].quantile(0.25)
+    q3 = df[col].quantile(0.75)
+    iqr = q3 - q1
 
-df["is_outlier"] = (df[col] < lower) | (df[col] > upper)
-df.to_csv("cleaned_heights.csv", index=False)
-print("Saved successfully!")
+    print("\nColumn:", col)
+    print("IQR:", iqr)
+
+    rid = df[(df[col] < (q1 - 1.5 * iqr)) |
+             (df[col] > (q3 + 1.5 * iqr))]
+
+    print("Outliers:")
+    print(rid[col])
+
+    delid = df[~((df[col] < (q1 - 1.5 * iqr)) |
+                 (df[col] > (q3 + 1.5 * iqr)))]
+
+    print("Data after removing outliers:")
+    print(delid)
 ```
 <img width="595" height="483" alt="image" src="https://github.com/user-attachments/assets/3d857f35-38a7-4552-a601-9c20830cbfc4" />
 
 ```
-df = pd.read_csv("iris.csv")
-print(df.head())
-print(df.info())
+# Step 1: Read the Data
+ir = pd.read_csv('iris.csv')
+ir
 
-for col in df.select_dtypes(include="number").columns:
-    Q1 = df[col].quantile(0.25)
-    Q3 = df[col].quantile(0.75)
-    IQR = Q3 - Q1
+# Step 2: Get basic information
+ir.info()
+ir.describe()
 
-    outliers_iqr = df[(df[col] < Q1 - 1.5 * IQR) |
-                      (df[col] > Q3 + 1.5 * IQR)]
-    print(f"\nIQR outliers in {col}:\n", outliers_iqr[[col]])
+# Step 3: Detect Outliers using Boxplot
+sns.boxplot(data=ir.select_dtypes(include=np.number))
 
-    z = np.abs(stats.zscore(df[col], nan_policy="omit"))
-    print(f"Z-score outliers in {col}:\n", df[z > 3][[col]])
+# Step 4: Detect Outliers using Scatterplot
+sns.scatterplot(data=ir.select_dtypes(include=np.number))
 
-df.to_csv("cleaned_iris.csv", index=False)
-print("Saved successfully!")
+# Step 5: Remove Outliers using IQR Method
+ir_clean = ir.copy()
+
+for col in ir.select_dtypes(include=np.number).columns:
+
+    q1 = ir_clean[col].quantile(0.25)
+    q3 = ir_clean[col].quantile(0.75)
+    iqr = q3 - q1
+
+    print("\nColumn:", col)
+    print("IQR:", iqr)
+
+    rid = ir_clean[(ir_clean[col] < (q1 - 1.5 * iqr)) |
+                   (ir_clean[col] > (q3 + 1.5 * iqr))]
+
+    print("Outliers:")
+    print(rid[col])
+
+    ir_clean = ir_clean[(ir_clean[col] >= (q1 - 1.5 * iqr)) &
+                        (ir_clean[col] <= (q3 + 1.5 * iqr))]
+
+print("Data after IQR:")
+ir_clean
+
+# Step 6: Remove Outliers using Z-score Method
+numeric_data = ir.select_dtypes(include=np.number)
+
+z = np.abs(stats.zscore(numeric_data))
+
+threshold = 3
+
+outliers = numeric_data[(z > threshold).any(axis=1)]
+
+print("Outliers:")
+print(outliers)
+
+# Remove Outliers
+ir_zclean = ir[(z <= threshold).all(axis=1)]
+
+print("Data after Z-score:")
+ir_zclean
 ```
 <img width="600" height="750" alt="image" src="https://github.com/user-attachments/assets/2f9db559-faca-43c1-b7eb-a84cc0f7cf06" />
 
 ```
-df = pd.read_csv("Loan_data.csv")
+# Step 1: Read the Data
+df = pd.read_csv('Loan_data.csv')
+df
 
-print(df.head())
-print(df.info())
-print("Missing values:\n", df.isnull().sum())
-print("Duplicates:", df.duplicated().sum())
+# Step 2: Get basic information
+df.info()
+df.describe()
 
+# Step 3: Check null values
+df.isnull().sum()
+
+# Step 4: Separate Numerical and Categorical Columns
+num_cols = df.select_dtypes(include=np.number).columns
+cat_cols = df.select_dtypes(include=['object', 'str']).columns
+
+# Step 5: Fill Numerical Null Values with Mean
+for col in num_cols:
+    df[col] = df[col].fillna(df[col].mean())
+
+# Step 6: Fill Categorical Null Values with Mode
+for col in cat_cols:
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+# Step 7: Remove Duplicate Values
 df = df.drop_duplicates()
 
-# Fill numerical missing values
-for col in df.select_dtypes(include="number").columns:
-    df[col] = df[col].fillna(df[col].median())
+# Step 8: Check Null Values Again
+df.isnull().sum()
 
-# Fill categorical missing values
-for col in df.select_dtypes(include=["object", "str"]).columns:
-    if df[col].isnull().any() and not df[col].mode().empty:
-        df[col] = df[col].fillna(df[col].mode()[0])
+# Step 9: Display Clean Data
+df
 
-# IQR and Z-score on ApplicantIncome
-col = "ApplicantIncome"
-
-Q1 = df[col].quantile(0.25)
-Q3 = df[col].quantile(0.75)
-IQR = Q3 - Q1
-
-outliers_iqr = df[(df[col] < Q1 - 1.5 * IQR) |
-                  (df[col] > Q3 + 1.5 * IQR)]
-print("\nIQR outliers:\n", outliers_iqr[[col]])
-
-z = np.abs(stats.zscore(df[col], nan_policy="omit"))
-print("\nZ-score outliers:\n", df[z > 3][[col]])
-
-df.to_csv("cleaned_Loan_data.csv", index=False)
-print("Saved successfully!")
+# Step 10: Save Clean Data
+df.to_csv('clean_Loan_data.csv', index=False)
 ```
 <img width="600" height="783" alt="image" src="https://github.com/user-attachments/assets/dca3a5ea-7414-4169-870e-c78998863eaa" />
 <img width="603" height="496" alt="image" src="https://github.com/user-attachments/assets/9046ac48-2e14-41a1-8410-ff0d9ef892aa" />
