@@ -72,8 +72,7 @@ df_dropna
 clean_data = df_mean
 clean_data.to_csv('clean_data.csv', index=False)
 ```
-<img width="596" height="788" alt="image" src="https://github.com/user-attachments/assets/a4869392-4c37-4830-a1b7-59329ba56fdd" />
-
+<img width="593" height="217" alt="image" src="https://github.com/user-attachments/assets/afd51c37-cb6f-4a5a-9ef8-adecb8902ae7" />
 ```
 # Step 1: Read the Data
 df = pd.read_csv('SAMPLEIDS.csv')
